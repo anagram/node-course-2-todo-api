@@ -4,9 +4,9 @@ const {MongoClient, ObjectID} = require('mongodb');
  var obj = new ObjectID();
  console.log(obj);
 // use object de-structuring in ES6
-var user = {name: 'han', age: 42};
-var {name, age} = user;
-console.log(`name var pulled out: ${name} and age: ${age}`);
+// var user = {name: 'han', age: 42};
+// var {name, age} = user;
+// console.log(`name var pulled out: ${name} and age: ${age}`);
 
 MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
   if (err) {
