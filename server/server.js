@@ -34,7 +34,7 @@ var User = mongoose.model('User', {
 });
 
 var dude = new User({
-  email: 'dude@excellent.com'
+  email: '   myemail@mydomain.com '
 });
 
 dude.save().then((doc) => {
@@ -46,13 +46,13 @@ dude.save().then((doc) => {
 // how to create an instance:
 
 // var now = Date.now();
-var newTodo = new Todo({
-  text: 'save a dude in users collection'
-
-});
-
-newTodo.save().then((doc) => {
-  console.log('Saved todo ', JSON.stringify(doc, undefined, 2));
-}, (e) => {
-  console.log('Unable to save Todo', e);
-});
+// var newTodo = new Todo({
+//  text: 'save a dude in users collection'
+//
+// });
+//
+// newTodo.save().then((doc) => {
+//   console.log('Saved todo ', JSON.stringify(doc, undefined, 2));
+// }, (e) => {
+//   console.log('Unable to save Todo', e);
+// });
