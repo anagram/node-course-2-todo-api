@@ -154,19 +154,19 @@ describe('PATCH /todos/:id', () => {
       var hexId = todos[0]._id.toHexString();
       var text = 'this is my patched text for first todo! *** '
 
-    request(app)
-      .patch(`/todos/${hexId}`)
-      .send({
-        completed: true,
-        text: text
-      })
-      .expect(200)
-      .expect((res) => {
-        expect(res.body.todo.text).toBe(text);
-        expect(res.body.todo.completed).toBe(true);
-        expect(res.body.todo.completedAt).toBeA('number');
-      })
-      .end(done);
+      request(app)
+        .patch(`/todos/${hexId}`)
+        .send({
+          completed: true,
+          text: text
+        })
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.todo.text).toBe(text);
+          expect(res.body.todo.completed).toBe(true);
+          expect(res.body.todo.completedAt).toBeA('number');
+        })
+        .end(done);
 
   });
 
@@ -174,19 +174,20 @@ describe('PATCH /todos/:id', () => {
     var hexId = todos[1]._id.toHexString();
     var text = 'this *** is my patched text for second todo';
 
-  request(app)
-    .patch(`/todos/${hexId}`)
-    .send({
-        completed: false,
-        text: text
+    request(app)
+      .patch(`/todos/${hexId}`)
+      .send({
+          completed: false,
+          text: text
+        })
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todo.text).toBe(text);
+        expect(res.body.todo.completed).toBe(false);
+        expect(res.body.todo.completedAt).toNotExist();
       })
-    .expect(200)
-    .expect((res) => {
-      expect(res.body.todo.text).toBe(text);
-      expect(res.body.todo.completed).toBe(false);
-      expect(res.body.todo.completedAt).toNotExist();
-    })
-    .end(done);
+      .end(done);
 
   });
+
 });

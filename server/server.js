@@ -1,3 +1,5 @@
+require('./config/config');
+
 const _ = require('lodash');
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -8,7 +10,7 @@ var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
 var app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 // middleware
 app.use(bodyParser.json());
@@ -26,7 +28,7 @@ app.post('/todos', (req, res) => {
 });
 
 app.get('/todos', (req, res) => {
-  console.log(`recieved request for todos `);
+  // console.log(`recieved request for todos `);
   Todo.find().then((todos) => {
     res.send({todos});
   }, (e) => {
@@ -68,7 +70,7 @@ app.delete('/todos/:id', (req, res) => {
 
 app.delete('/todos'), (req, res) => {
   Todo.remove({}).then((res) => {
-    console.log('removed all the things');
+    console.log('removed all the things!');
   })
 }
 
@@ -76,7 +78,6 @@ app.patch('/todos/:id', (req, res) => {
   var id = req.params.id;
   // only pull proerties we allow user to modify
   var body = _.pick(req.body, ['text', 'completed']);
-
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
