@@ -12,7 +12,6 @@ var {User} = require('./models/user');
 var app = express();
 const port = process.env.PORT;
 
-// middleware
 app.use(bodyParser.json());
 
 app.post('/todos', (req, res) => {
@@ -99,6 +98,23 @@ app.patch('/todos/:id', (req, res) => {
     res.status(400).send();
   })
 
+});
+
+// POST /users
+app.post('/users', (req, res) => {
+  var body = _.pick(req.body, ['email', 'password']);
+  console.log(`body.email ${body.email}, body.password: ${body.password}`);
+
+  var user = new User(body);
+  // var user = new User({
+  //   "email": body.email,
+  //   "password": body.password
+  // });
+  user.save().then((user) => {
+    res.send(user);
+  }, (e) => {
+    res.status(400).send(e);
+  });
 });
 
 app.listen(port, () => {
