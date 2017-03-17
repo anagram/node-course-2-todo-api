@@ -8,6 +8,7 @@ const {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
+var {authenticate} = require('./middleware/authenticate');
 
 var app = express();
 const port = process.env.PORT;
@@ -27,7 +28,6 @@ app.post('/todos', (req, res) => {
 });
 
 app.get('/todos', (req, res) => {
-  // console.log(`recieved request for todos `);
   Todo.find().then((todos) => {
     res.send({todos});
   }, (e) => {
@@ -47,13 +47,14 @@ app.get('/todos/:id', (req, res) => {
     if (!todo) {
       return res.status(404).send();
     }
+
     res.send({todo});
   }).catch((e) => res.status(400).send());
 });
 
 app.delete('/todos/:id', (req, res) => {
-  // get the id
   var id = req.params.id;
+
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
@@ -63,8 +64,10 @@ app.delete('/todos/:id', (req, res) => {
       return res.status(404).send();
     }
     // succeeds even when tod has been deleted already WOW
-    res.status(200).send({todo});
-  }).catch((e) => res.status(400).send());
+    res.send({todo});
+  }).catch((e) => {
+    res.status(400).send();
+  });
  });
 
 app.delete('/todos'), (req, res) => {
@@ -97,28 +100,28 @@ app.patch('/todos/:id', (req, res) => {
   }).catch((e) => {
     res.status(400).send();
   })
-
 });
 
 // POST /users
 app.post('/users', (req, res) => {
   var body = _.pick(req.body, ['email', 'password']);
-  console.log(`body.email ${body.email}, body.password: ${body.password}`);
-  console.log('body: ', body);
-
   var user = new User(body);
-  // var user = new User({
-  //   "email": body.email,
-  //   "password": body.password
-  // });
+
   user.save().then(() => {
-    //res.send(user);
+    //console.log('returning promise from generateAuthToken');
     return user.generateAuthToken();
   }).then((token) => {
+    //console.log('here is my token ', token);
     res.header('x-auth', token).send(user);
   }).catch((e) => {
+    //console.log('error  ', e);
     res.status(400).send(e);
   })
+});
+
+app.get('/users/me', authenticate, (req, res) => {
+  //console.log('/users/me');
+  res.send(req.user);
 });
 
 app.listen(port, () => {
