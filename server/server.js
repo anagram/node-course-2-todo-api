@@ -31,7 +31,7 @@ app.get('/todos', (req, res) => {
   Todo.find().then((todos) => {
     res.send({todos});
   }, (e) => {
-    console.log(`request for todos ERROR `);
+    //console.log(`request for todos ERROR `);
     res.status(400).send(e);
   });
 });
