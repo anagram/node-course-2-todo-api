@@ -120,7 +120,8 @@ app.post('/users', (req, res) => {
 });
 
 app.get('/users/me', authenticate, (req, res) => {
-  //console.log('/users/me');
+
+  console.log('/users/me password ', req.user.password);
   res.send(req.user);
 });
 
