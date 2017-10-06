@@ -1,3 +1,6 @@
+// implementing crypto without the jwt library,
+// just to demo how crypto and salting works
+
 const {SHA256} = require('crypto-js');
 
 var message = 'I am user number 3';
